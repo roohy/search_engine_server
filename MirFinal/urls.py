@@ -9,4 +9,8 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^indexer$','crawler.views.indexPage'),
+    url(r'^ajax/index/$','crawler.views.indexIt'),
+    url(r'^ajax/search/$','crawler.views.searchIt'),
+    url(r'^search/$','crawler.views.searchPage'),
 )
