@@ -1,3 +1,4 @@
+import re
 from bs4 import BeautifulSoup
 from urllib import request
 from queue import Queue
@@ -6,6 +7,7 @@ import json
 import os
 import crawler.localConf as configs
 from subprocess import Popen,PIPE
+
 
 MAX_CRAWLED = 6
 START_LINK = "http://en.wikipedia.org/wiki/Information_retrieval"
@@ -60,6 +62,7 @@ def pageParser (url):
     result['url'] = url
     result['title'] = soup.find(id="firstHeading").string
     result['body'] = str(soup.find(id="mw-content-text"))
+    result['body'] = re.sub('<[^>]*>' , ' ' , result['body'])
     # print("body is " , result['body'])
     # result["title"] = soup.title.string.split(" - Wikipedia")[0]
     links = soup.find(id="mw-content-text").find_all("a")
