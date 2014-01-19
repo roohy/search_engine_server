@@ -33,9 +33,9 @@ def crawler(start_link = START_LINK , max_crawled = MAX_CRAWLED):
             continue
         result['content'].append(new_result)
         counter = counter + 1
-        for link in new_result['links']:
-            linkqueue.put(LINK_PREFIX + link)
-            link = LINK_PREFIX + link
+        for i in range(0,len(new_result['links'])):
+            linkqueue.put(LINK_PREFIX + new_result['links'][i])
+            new_result['links'][i]  = LINK_PREFIX + new_result['links'][i]
     result = updateRanks(result)
 
     print (" finished fetching ",counter,"pages.")
@@ -46,7 +46,9 @@ def crawler(start_link = START_LINK , max_crawled = MAX_CRAWLED):
 
 def updateRanks(results):
     vector = ranks(results['content'],0.1)
+    print ('vector is ',vector)
     for i in range(0,len(results['content'])):
+        print('index is ', i)
         results['content'][i]['rank'] = vector[i]
     return results
 
@@ -77,7 +79,7 @@ def pageParser (url):
     print ("links exracted ", result['links'])
     return result
 def indexJson():
-    os.system("java -jar "+ configs.JARFILELOCATION +" index "+ configs.INDEX_DIR)
+    os.system("java -jar "+ configs.JARFILELOCATION +" index "+ configs.JSON_DIR)
 
 def search(query):
     process = Popen(['java','-jar',configs.JARFILELOCATION, 'search' ,configs.INDEX_DIR,query], stdout=PIPE)
