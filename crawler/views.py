@@ -34,7 +34,9 @@ def indexIt(request):
     count = request.POST['count']
     count = int(count)
     print("crawling on pages count " , count, " starting form page: ",url )
-    crawler(url , count)
+    result = crawler(url , count)
     indexJson()
-    return HttpResponse("haha")
+    result = [{'url':item['url'], 'rank':item['rank']} for item in result['content']]
+    result = dumps(result)
+    return HttpResponse(result, content_type='application/json')
 

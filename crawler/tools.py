@@ -42,6 +42,7 @@ def crawler(start_link = START_LINK , max_crawled = MAX_CRAWLED):
     variable = json.dumps(result)
     file = open(configs.JSON_DIR , 'w')
     file.write(variable)
+    return result
 
 def updateRanks(results):
     vector = ranks(results['content'],0.1)
