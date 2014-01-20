@@ -17,10 +17,27 @@ function sendToserver(){
 
             if (data){
                 console.log(data);
+                var label_temp = $('<div class="yellow ui message result_count">'+data.length+' Results Retrived</div>');
+                label_temp.insertAfter('#search_header');
+                label_temp.slideDown(400,function(){
+
+                    setTimeout(function(){
+                        label_temp.slideUp(400,function(){
+                            label_temp.remove();
+                        })
+                        }, 1000);
+                });
                 for (var i = 0 ; i<data.length ; i++)
                 {
-                    $('<div class="ui segment"><p><b>'+data[i].url +'</b><br/>'+ data[i].title +'</p> </div>').appendTo('#resultContainer');
+                    $('<div class="ui segment search-result"><p><b>'+data[i].url +'</b><br/>'+ data[i].title +
+                        '</p><div class="ui label blue ranks">Rank<div class="detail">'+ data[i].rank +
+                        '</div></div></div>').appendTo('#resultContainer');
                 }
+                $('.search-result').hover(function(e){
+                   $( e.target).children('.ranks').slideDown();
+                },function(e){
+                    $(e.target).children('.ranks').slideUp();
+                });
 		       // Request error
 		    }else {
 		       // success

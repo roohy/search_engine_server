@@ -7,6 +7,7 @@ import json
 import os
 import crawler.localConf as configs
 from subprocess import Popen,PIPE
+import math
 
 
 MAX_CRAWLED = 6
@@ -46,9 +47,12 @@ def crawler(start_link = START_LINK , max_crawled = MAX_CRAWLED):
 
 def updateRanks(results):
     vector = ranks(results['content'],0.1)
-    print ('vector is ',vector)
+    # print ('vector is ',vector)
     for i in range(0,len(results['content'])):
-        print('index is ', i)
+        # print('index is ', i, ' rank is ', vector[i] , "  | ", type(vector[i]))
+        if type(vector[i]) == complex:
+            print("oops, complex number result ",vector[i])
+            vector[i] = vector[i].real
         results['content'][i]['rank'] = vector[i]
     return results
 
@@ -103,9 +107,10 @@ def search(query):
         temp = {}
         temp['url'] = outputList[firstResultIndex]
         temp['title'] = outputList[firstResultIndex+1]
+        temp['rank'] = outputList[firstResultIndex+2]
         result.append(temp)
         # print ("item ",outputList[firstResultIndex], outputList[firstResultIndex+1])
-        firstResultIndex += 2
+        firstResultIndex += 3
     return result
     # os.system("java -jar /home/roohy/Desktop/haha.jar search /home/roohy/PycharmProjects/MirFinal/indexDIR "+query)
 

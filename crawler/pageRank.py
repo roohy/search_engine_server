@@ -13,11 +13,11 @@ def makeTable(entry, alpha = 0.1):
 
     matrix = [[0.0 for x in range(0,length)] for y in range(0,length)]
 
-    print('map is ',map)
+    # print('map is ',map)
     for i in range(0,length):
         tempBool = 0 # this checks the number of pages this page is linking to
         for site in entry[i]['links']:
-            print('site is', site)
+            # print('site is', site)
             if site in map: #if the link is actually crawled. sometimes we push a link into queue but due to the limit it never will be crawled
                 matrix[i][map[site]] = 1
                 tempBool += 1
@@ -34,15 +34,19 @@ def makeTable(entry, alpha = 0.1):
 
 def findEigens(matrix):
     mat = np.matrix(matrix)
-    print("matrix is: ", mat)
+    # print("matrix is: ", mat)
     transposed = np.matrix.transpose(mat)
     #print("trans is :")
     #print(transposed)
     eigenvalues,eigenvectors = np.linalg.eig(transposed)
-    #print ( 'eigens ', eigenvalues)
+    # eig_vals_sorted = np.sort(eigenvalues)
+    # eig_vecs_sorted = eigenvectors[eigenvalues.argsort()]
+    # print ( 'eigens ', eig_vals_sorted)
     #print ( 'eigens ', eigenvectors)
+    # return eig_vecs_sorted[-1].tolist()[0]
     for i in range(0,len(eigenvalues)):
-        if round(eigenvalues[i],5) == 1.00:
+        if  (type(eigenvalues[i])!= complex or (type(eigenvalues[i])== complex and eigenvalues[i].imag == 0)) and  round(eigenvalues[i],5) > 0.99 and  round(eigenvalues[i],5) < 1.01:
+            # print("found it ",eigenvalues[i])
             return eigenvectors[i].tolist()[0]
 
 
