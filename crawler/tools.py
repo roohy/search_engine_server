@@ -68,6 +68,10 @@ def pageParser (url):
     result = {}
     result['url'] = url
     result['title'] = soup.find(id="firstHeading").string
+    if result['title'] is None:
+        result['title'] = ""
+        for st in soup.find(id="firstHeading").strings:
+            result['title'] = result['title'] + st
     result['body'] = str(soup.find(id="mw-content-text"))
     result['body'] = re.sub('<[^>]*>' , ' ' , result['body'])
     # print("body is " , result['body'])
